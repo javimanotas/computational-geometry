@@ -23,6 +23,11 @@ public class PointSpawner : MonoBehaviour
         OnDelete += p => _points.Remove(p);
     }
 
+    public void RemovePoint(int idx)
+    {
+        _points.RemoveAt(idx);
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(1))

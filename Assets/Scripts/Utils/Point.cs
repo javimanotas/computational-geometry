@@ -9,7 +9,16 @@ public class Point : MonoBehaviour
 
     void OnMouseDown()
     {
-        OnDelete();
+        Delete();
+    }
+
+    public void Delete(bool callback = true)
+    {
+        if (callback)
+        {
+            OnDelete();
+        }
+
         Destroy(gameObject);
     }
 }
