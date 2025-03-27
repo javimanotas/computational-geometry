@@ -1,2 +1,2 @@
-# computational-geometry
-Visualization of geometry algorithms
+# Computational geometry
+Implementation and visualization of common 2D and 3D geometry algorithms
