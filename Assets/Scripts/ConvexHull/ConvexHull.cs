@@ -29,7 +29,6 @@ public class ConvexHull : MonoBehaviour
         }
     }
 
-    // This implementation is output sensitive
     static IEnumerable<Vector2> ComputeHull(IEnumerable<Vector2> points)
     {
         static bool IsRightTurn(Vector2 p0, Vector2 p1, Vector2 p2)
