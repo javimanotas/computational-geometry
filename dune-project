@@ -18,4 +18,4 @@
  (allow_empty)
  (synopsis "implementation of computational geometry algorithmgs")
  (description "the main goal of this project is to implement and visualize 2D computational geometry algorithms along with the necessary data structures")
- (depends ocaml))
+ (depends ocaml graphics))
