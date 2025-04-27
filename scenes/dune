@@ -1,0 +1,3 @@
+(executables
+ (names convex_hull)
+ (libraries graphics graphics_utils read_utils scene data_structures algorithms))
