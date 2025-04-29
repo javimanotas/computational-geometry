@@ -11,6 +11,8 @@ Implementation and visualization of 2D computational geometry algorithms along w
 
 ## Algorithms
 
+> [!NOTE] In `lib/algorithms`, each algorithm includes a brief, non-rigorous explanation designed to convey the main idea behind how it works. These summaries aim to be intuitive and accessible without diving into formal proofs.
+
 ### Convex hull
 ![](screenshots/convex_hull.png)
 
