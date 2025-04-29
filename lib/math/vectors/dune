@@ -1,0 +1,2 @@
+(library
+ (name vec_2d))
