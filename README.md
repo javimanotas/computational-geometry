@@ -20,3 +20,15 @@ Run the following command:
 dune exec scenes/convex_hull.exe
 ```
 Once the program is running, click on the screen to add points and the hull will be computed dynamically.
+
+### Segments intersections (fast)
+![](screenshots/segments_intersections.png)
+
+Run the following command:
+
+``` bash
+dune exec scenes/segments_intersections.exe
+```
+1. Click anywhere on the screen to set the first endpoint of a segment.
+2. While holding the mouse button, drag to your desired position.
+3. Release the mouse button to set the second endpoint of the segment.

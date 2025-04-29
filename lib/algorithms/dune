@@ -1,4 +1,4 @@
 (library
  (name algorithms)
- (modules convex_hull)
+ (modules convex_hull segments_intersections)
  (libraries data_structures))
