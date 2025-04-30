@@ -1,7 +1,6 @@
-type 'a t = {
-  mutable content : 'a option array;
-  mutable size : int;
-}
+type 'a t = { mutable content : 'a option array
+            ; mutable size : int
+            }
 
 let empty () = {
   content = [||];
