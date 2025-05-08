@@ -6,7 +6,15 @@ module type Config = sig
   val title : string
 end
 
-module Make (Conf : Config) = struct
+module type Scene = sig
+  val clean : unit -> unit
+  val event_loop : (unit -> unit) -> unit
+  val screen_coords : float * float -> int * int
+  val world_coords : int * int -> float * float
+  val point_size : unit -> int
+end
+
+module Make (Conf : Config) : Scene = struct
   let init () =
     Graphics_utils.open_window Conf.res Conf.background_color Conf.title;
     Graphics.set_line_width @@ snd Conf.res / 200
@@ -16,6 +24,7 @@ module Make (Conf : Config) = struct
     Graphics.fill_rect 0 0 (Graphics.size_x ()) (Graphics.size_y ())
 
   let event_loop action =
+    init ();
     try
       while true do
         action ()
