@@ -1,23 +1,23 @@
-open Data_structures.Array_list;;
-
 (*
 
-This implementation uses an incremental approach.
+This implementation follows an incremental approach.
 
-The first step is to sort the points by their x-coordinate, ensuring they are
-processed in left-to-right order.
+First, the input points are sorted by their x-coordinate to ensure they are
+processed from left to right.
 
-To construct the upper hull, we begin with the first two sorted points and then
-iterate through the remaining points one by one. For each new point added, we
-check whether the last three points in the current hull form a right turn. If
-not, the middle point is removed (as it would create a concave angle), and this
-check continues until the last three points do form a right turn.
+To build the upper hull, points are added one by one to a working list. After
+each addition, the last three points are checked to see if they form a right
+turn. If they don’t (i.e., they form a concave angle), the middle point is
+removed. This check continues recursively until the right-turn condition is
+restored.
 
-Once the upper hull is built, we repeat the process by looping in reverse order
-to compute the lower hull.
+Once the upper hull is complete, the same process is repeated in reverse order
+to construct the lower hull.
 
-Finally, the convex hull is obtained by combining the upper and lower parts
-(excluding the duplicate endpoints where they meet).
+The final convex hull is obtained by concatenating the upper and lower hulls,
+omitting the duplicate endpoints where they meet.
+
+Note: the input should be a non empty array.
 
 *)
 
@@ -25,38 +25,13 @@ let compute points =
   let is_right_turn (px, py) (qx, qy) (rx, ry) =
     (qx -. px) *. (ry -. qy) -. (qy -. py) *. (rx -. qx) < 0. in
 
+  let rec rm_left_turns = function
+    | (a::b::c::l) when not (is_right_turn c b a) -> rm_left_turns (a::c::l)
+    | other -> other in
+
   Array.sort compare points;
-  let n = Array.length points in
-  let upper = of_array [|points.(0); points.(1)|]
-  and lower = of_array [|points.(n - 1); points.(n - 2)|] in
 
-  for i = 2 to n - 1 do
-    add upper points.(i);
-    while
-      let len = length upper in
-      len > 2 &&
-      let x = get upper (len - 3)
-      and y = get upper (len - 2)
-      and z = get upper (len - 1)
-      in not (is_right_turn x y z) do
-        remove_at upper (length upper - 2)
-    done
-  done;
-
-  for i = n - 3 downto 0 do
-    add lower points.(i);
-    while
-      let len = length lower in
-      len > 2 &&
-      let x = get lower (len - 3)
-      and y = get lower (len - 2)
-      and z = get lower (len - 1)
-      in not (is_right_turn x y z) do
-        remove_at lower (length lower - 2)
-    done
-  done;
-
-  remove_last upper;
-  remove_last lower;
-  Array.append (to_array upper) (to_array lower)
+  let upper_hull = Array.fold_right (fun p l -> rm_left_turns (p::l)) points []
+  and lower_hull = Array.fold_left (fun l p -> rm_left_turns (p::l)) [] points in
+  Array.of_list (List.tl upper_hull @ List.tl lower_hull)
 ;;

@@ -1,5 +1,4 @@
 open Graphics;;
-open Data_structures;;
 open Algorithms;;
 
 module Conf = struct
@@ -14,17 +13,16 @@ module Scene = Scene.Make(Conf);;
 
 let draw_scene points =
   Scene.clean ();
-
-  set_color Conf.secondary_color;
-  let hull =
-    if Array_list.length points >= 2 then
-      Convex_hull.compute @@ Array_list.to_array points
-    else
-      [||] in
-  draw_poly @@ Array.map Scene.screen_coords hull;
   
+  set_color Conf.secondary_color;
+  if points <> [||] then
+    points
+    |> Convex_hull.compute
+    |> Array.map Scene.screen_coords
+    |> draw_poly;
+
   set_color Conf.primary_color;
-  points |> Array_list.to_array |> Array.iter (fun p ->
+  points |> Array.iter (fun p ->
     let (x, y) = Scene.screen_coords p in
     fill_circle x y (Scene.point_size ())
   );
@@ -32,15 +30,11 @@ let draw_scene points =
   synchronize ()
 ;;
 
-Scene.init ();;
-
-let points = Array_list.empty ();;
-
-draw_scene points;
+let points = ref [];;
 
 Scene.event_loop (fun () ->
+  draw_scene @@ Array.of_list !points;
   let status = wait_next_event [Button_down] in
   let mouse_pos = Scene.world_coords (status.mouse_x, status.mouse_y) in
-  Array_list.add points mouse_pos;
-  draw_scene points
+  points := mouse_pos :: !points;
 );;
